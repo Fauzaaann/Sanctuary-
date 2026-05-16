@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Sanctuary | SF</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="login-screen" class="flex-center">
+        <div class="login-box animate-fade-in">
+            <div class="vault-icon">🔒</div>
+            <h2 class="dancing-font">Private Sanctuary</h2>
+            <p class="gate-subtitle">Enter Personal Access Key</p>
+            <input type="password" id="password-input" placeholder="••••••••" maxlength="6">
+            <button class="premium-btn" onclick="checkPassword()">Unlock Archive</button>
+            <p id="login-error" class="error-text hidden">Invalid Signature. Try Again.</p>
+        </div>
+    </div>
+
+    <div id="sanctuary-app" class="hidden">
+        
+        <nav class="sidebar">
+            <div class="logo">
+                <span class="initials">S & F</span>
+                <span class="established" contenteditable="true" id="est-date">Est. 08.05</span>
+                <div id="user-session-badge" class="session-badge">Profile: Syncing...</div>
+            </div>
+            <div class="nav-links">
+                <button class="nav-link active" onclick="switchTab('tab-gallery')"><span class="icon">🖼️</span> Archive</button>
+                <button class="nav-link" onclick="switchTab('tab-messages')"><span class="icon">💬</span> Frequencies</button>
+                <button class="nav-link" onclick="switchTab('tab-mood')"><span class="icon">✨</span> Mood Link</button>
+                <button class="nav-link" onclick="switchTab('tab-notepad')"><span class="icon">📝</span> Shared Ledger</button>
+                <button class="nav-link" onclick="switchTab('tab-calendar')"><span class="icon">📅</span> Timeline</button>
+                <button class="nav-link" onclick="switchTab('tab-location')"><span class="icon">📍</span> Telemetry</button>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            
+            <div id="tab-gallery" class="tab-content animate-slide-up">
+                <div class="header-block">
+                    <h2 contenteditable="true">Our Secret Archive</h2>
+                    <p class="subtitle" contenteditable="true">Store photos, videos, and live audio records forever.</p>
+                </div>
+                
+                <div class="archive-controls-grid">
+                    <label class="premium-upload-card">
+                        <span class="upload-icon">📸</span>
+                        <span>Upload Photo / Video</span>
+                        <input type="file" id="gallery-upload" accept="image/*,video/*" onchange="handleUpload(event)">
+                    </label>
+
+                    <div class="premium-upload-card voice-rec-card" id="voice-card">
+                        <span class="upload-icon" id="mic-icon">🎙️</span>
+                        <span id="record-text">Record Voice Memo</span>
+                        <div class="rec-controls hidden" id="rec-controls">
+                            <span class="timer" id="rec-timer">00:00</span>
+                        </div>
+                        <button class="rec-action-btn" onclick="toggleVoiceRecording(event)">Start</button>
+                    </div>
+                </div>
+
+                <div id="gallery-grid" class="grid-layout">
+                    </div>
+            </div>
+
+            <div id="tab-messages" class="tab-content hidden animate-slide-up">
+                <div class="header-block">
+                    <h2>Direct Frequency</h2>
+                    <p class="subtitle">Broadcast live alerts straight onto the primary display panel layout view.</p>
+                </div>
+                <div class="luxury-form-card">
+                    <div class="input-glow-wrapper">
+                        <input type="text" id="msg-input" placeholder="Type a message that will pop up instantly...">
+                    </div>
+                    <button class="premium-btn send-btn" onclick="sendSecureMessage()">Transmit Message</button>
+                </div>
+            </div>
+
+            <div id="tab-mood" class="tab-content hidden animate-slide-up">
+                <div class="header-block">
+                    <h2>Current Resonance</h2>
+                    <p class="subtitle">Tap your mood below to instantaneously update your partner's timeline.</p>
+                </div>
+                
+                <div class="mood-dashboard">
+                    <div class="mood-selector-card">
+                        <h3>Update Your Status</h3>
+                        <div class="mood-emoji-row">
+                            <button class="mood-btn" onclick="updateLocalMood('🥰', 'Deeply Loved')">🥰</button>
+                            <button class="mood-btn" onclick="updateLocalMood('🥺', 'Missing You')">🥺</button>
+                            <button class="mood-btn" onclick="updateLocalMood('✨', 'Inspired')">✨</button>
+                            <button class="mood-btn" onclick="updateLocalMood('😴', 'Exhausted')">😴</button>
+                            <button class="mood-btn" onclick="updateLocalMood('🌹', 'Romantic')">🌹</button>
+                        </div>
+                    </div>
+
+                    <div class="mood-display-matrix">
+                        <div class="mood-status-box f-glow">
+                            <h4>F.. State</h4>
+                            <div class="huge-emoji" id="f-emoji" contenteditable="true">✨</div>
+                            <p class="mood-label" id="f-label" contenteditable="true">Building Our Future</p>
+                        </div>
+                        <div class="mood-status-box s-glow">
+                            <h4>S.. State</h4>
+                            <div class="huge-emoji" id="s-emoji" contenteditable="true">🥰</div>
+                            <p class="mood-label" id="s-label" contenteditable="true">Deeply Loved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-notepad" class="tab-content hidden animate-slide-up">
+                <div class="header-block">
+                    <h2>The Shared Ledger</h2>
+                    <p class="subtitle">Leave live notes for each other anytime. Click any note to edit its content.</p>
+                </div>
+                <div class="luxury-form-card notepad-entry">
+                    <input type="text" id="note-title" placeholder="Note Title...">
+                    <textarea id="note-text" placeholder="Leave a message or promise... Change anything later."></textarea>
+                    <button class="premium-btn" onclick="saveNote()">Seal Note Into Ledger</button>
+                </div>
+                <div id="notes-list" class="grid-layout"></div>
+            </div>
+
+            <div id="tab-calendar" class="tab-content hidden animate-slide-up">
+                <div class="header-block">
+                    <h2>Timeline Matrix</h2>
+                    <p class="subtitle">Tracking milestones along our path toward eternity.</p>
+                </div>
+                <div class="calendar-center-wrapper">
+                    <div class="calendar-box">
+                        <div class="calendar-header" contenteditable="true">May 2026</div>
+                        <div class="calendar-days">
+                            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+                        </div>
+                        <div class="calendar-dates" id="calendar-grid-dates"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-location" class="tab-content hidden animate-slide-up">
+                <div class="header-block">
+                    <h2>Telemetry Matrix</h2>
+                    <p class="subtitle">Real-time coordinate mapping and proximity tracking between us.</p>
+                </div>
+                
+                <div class="location-dashboard">
+                    <div class="proximity-card animate-pulse-glow">
+                        <h3>Proximity Status</h3>
+                        <div class="distance-display" id="distance-value" contenteditable="true">Awaiting Profile Data...</div>
+                        <p class="distance-sub" contenteditable="true">Separating your hearts right now</p>
+                    </div>
+
+                    <div class="coordinates-grid">
+                        <div class="coord-box f-glow">
+                            <h4>F.. Coordinates</h4>
+                            <p id="f-lat" contenteditable="true">Lat: Not Shared</p>
+                            <p id="f-lon" contenteditable="true">Lon: Not Shared</p>
+                            <div class="location-status-dot green"></div>
+                        </div>
+                        <div class="coord-box s-glow">
+                            <h4>S.. Coordinates</h4>
+                            <p id="s-lat" contenteditable="true">Lat: Not Shared</p>
+                            <p id="s-lon" contenteditable="true">Lon: Not Shared</p>
+                            <div class="location-status-dot pink"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="premium-btn" style="margin-top: 20px;" onclick="initializeLiveTracking()">Sync My Live Location</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="global-popup" class="popup-overlay hidden">
+        <div class="popup-box">
+            <div class="popup-sparkle">✦</div>
+            <h3 id="popup-title" contenteditable="true">Transmission</h3>
+            <p id="popup-body" contenteditable="true">Message details...</p>
+            <button class="premium-btn popup-close-btn" onclick="closePopup()">Dismiss Alert</button>
+        </div>
+    </div>
+
+    <div id="notification-container" class="notification-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
